@@ -52,7 +52,7 @@ public class GsonAnnotator extends AbstractAnnotator {
 
     @Override
     public boolean isAdditionalPropertiesSupported() {
-        return false;
+        return true; // lost on deserialization, but that's fine
     }
 
 }

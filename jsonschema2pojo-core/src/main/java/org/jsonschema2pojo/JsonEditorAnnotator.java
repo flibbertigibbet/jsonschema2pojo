@@ -31,7 +31,7 @@ public class JsonEditorAnnotator extends AbstractAnnotator {
 
             int order = DEFAULT_PROPERTY_ORDER;
             if (propertyOrder != null) {
-                propertyOrder.asInt(DEFAULT_PROPERTY_ORDER);
+                order = propertyOrder.asInt(DEFAULT_PROPERTY_ORDER);
             }
 
             fieldOrders.put(order, propertyName);

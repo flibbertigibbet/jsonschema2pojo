@@ -16,10 +16,6 @@
 
 package org.jsonschema2pojo.annotations;
 
-/**
- * Created by kat on 11/21/15.
- */
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

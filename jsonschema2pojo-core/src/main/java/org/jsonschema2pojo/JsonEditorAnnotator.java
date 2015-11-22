@@ -26,9 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.sun.codemodel.*;
 import org.jsonschema2pojo.annotations.PluralTitle;
 
-/**
- * Created by kat on 11/21/15.
- */
+
 public class JsonEditorAnnotator extends AbstractAnnotator {
 
     // as used by json-editor

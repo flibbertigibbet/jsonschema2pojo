@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sun.codemodel.*;
-import org.jsonschema2pojo.annotations.PluralTitle;
+import org.jsonschema2pojo.annotations.*;
 
 
 public class JsonEditorAnnotator extends AbstractAnnotator {
@@ -42,6 +42,11 @@ public class JsonEditorAnnotator extends AbstractAnnotator {
 
         for (Iterator<String> properties = propertiesNode.fieldNames(); properties.hasNext();) {
             String propertyName = properties.next();
+
+            if (propertyName.equals("_localId")) {
+                continue;
+            }
+
             JsonNode element = propertiesNode.findValue(propertyName);
 
             int order = DEFAULT_PROPERTY_ORDER;
@@ -62,14 +67,57 @@ public class JsonEditorAnnotator extends AbstractAnnotator {
     public void propertyField(JFieldVar field, JDefinedClass clazz,
                               String propertyName, JsonNode propertyNode) {
 
-        JsonNode pluralTitleNode = propertyNode.findValue("plural_title");
+        if (propertyNode.has("title")) {
+            String title = propertyNode.get("title").asText();
 
-        if (pluralTitleNode != null) {
-            String pluralTitle = pluralTitleNode.asText();
+            if (!title.isEmpty()) {
+                JAnnotationUse titleAnnotation = field.annotate(Title.class);
+                titleAnnotation.param("value", title);
+            }
+        }
 
-            if (pluralTitle != null && !pluralTitle.isEmpty()) {
-                JAnnotationUse generated = field.annotate(PluralTitle.class);
-                generated.param("value", pluralTitle);
+        if (propertyNode.has("plural_title")) {
+            String pluralTitle = propertyNode.get("plural_title").asText();
+
+            if (!pluralTitle.isEmpty()) {
+                JAnnotationUse pluralTitleAnnotation = field.annotate(PluralTitle.class);
+                pluralTitleAnnotation.param("value", pluralTitle);
+            }
+        }
+
+        if (propertyNode.has("multiple")) {
+            Boolean multiple = propertyNode.get("multiple").asBoolean();
+            JAnnotationUse multipleAnnotation = field.annotate(Multiple.class);
+            multipleAnnotation.param("value", multiple);
+        }
+
+        if (propertyNode.has("fieldType")) {
+            String fieldType = propertyNode.get("fieldType").asText();
+            FieldTypes foundFieldType = FieldTypes.valueOf(fieldType);
+
+            if (foundFieldType != null) {
+                JAnnotationUse fieldTypeAnnotation = field.annotate(FieldType.class);
+                fieldTypeAnnotation.param("value", foundFieldType);
+            } else {
+                Log.info("No field type found for " + fieldType);
+            }
+        }
+
+        if (propertyNode.has("options")) {
+            JsonNode options = propertyNode.get("options");
+            if (options.has("hidden")) {
+                Boolean isHidden = options.get("hidden").asBoolean();
+                JAnnotationUse hiddenAnnotation = field.annotate(IsHidden.class);
+                hiddenAnnotation.param("value", isHidden);
+            }
+        }
+
+        if (propertyNode.has("description")) {
+            String description = propertyNode.get("description").asText();
+
+            if (!description.isEmpty()) {
+                JAnnotationUse descriptionAnnotation = field.annotate(Description.class);
+                descriptionAnnotation.param("value", description);
             }
         }
 

@@ -127,8 +127,18 @@ public class PropertyRule implements Rule<JDefinedClass, JDefinedClass> {
     }
 
     private JsonNode resolveRefs(JsonNode node, Schema parent) {
+        JsonNode ref = null;
         if (node.has("$ref")) {
-            Schema refSchema = ruleFactory.getSchemaStore().create(parent, node.get("$ref").asText());
+            ref = node.get("$ref");
+        } else if (node.has("items")) {
+            JsonNode itemsNode = node.get("items");
+            if (itemsNode.has("$ref")) {
+                ref = itemsNode.get("$ref");
+            }
+        }
+
+        if (ref != null) {
+            Schema refSchema = ruleFactory.getSchemaStore().create(parent, ref.asText());
             JsonNode refNode = refSchema.getContent();
             return resolveRefs(refNode, parent);
         } else {

@@ -41,6 +41,7 @@ public class JsonSchemaExtension implements GenerationConfig {
   boolean generateBuilders
   boolean includeAccessors
   boolean includeAdditionalProperties
+  boolean includeDynamicAccessors
   boolean includeConstructors
   boolean constructorsRequiredPropertiesOnly
   boolean includeHashcodeAndEquals
@@ -52,6 +53,7 @@ public class JsonSchemaExtension implements GenerationConfig {
   char[] propertyWordDelimiters
   boolean removeOldOutput
   SourceType sourceType
+  String targetVersion
   boolean useCommonsLang3
   boolean useDoubleNumbers
   boolean useJodaDates
@@ -91,6 +93,8 @@ public class JsonSchemaExtension implements GenerationConfig {
     classNameSuffix = ''
     includeAdditionalProperties = true
     includeAccessors = true
+    targetVersion = '1.6'
+    includeDynamicAccessors = true
   }
 
   @Override
@@ -152,6 +156,8 @@ public class JsonSchemaExtension implements GenerationConfig {
        |initializeCollections = ${initializeCollections}
        |classNamePrefix = ${classNamePrefix}
        |classNameSuffix = ${classNameSuffix}
+       |targetVersion = ${targetVersion}
+       |includeDynamicAccessors = ${includeDynamicAccessors}
      """.stripMargin()
   }
 }

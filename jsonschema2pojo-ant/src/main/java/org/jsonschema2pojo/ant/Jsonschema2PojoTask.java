@@ -120,6 +120,10 @@ public class Jsonschema2PojoTask extends Task implements GenerationConfig {
     private boolean includeAdditionalProperties = true;
 
     private boolean includeAccessors = true;
+    
+    private String targetVersion = "1.6";
+
+    private boolean includeDynamicAccessors = true;
 
     /**
      * Execute this task (it's expected that all relevant setters will have been
@@ -546,6 +550,28 @@ public class Jsonschema2PojoTask extends Task implements GenerationConfig {
         this.includeAccessors = includeAccessors;
     }
 
+    /**
+     * Sets the 'targetVersion' property of this class
+     *
+     * @param targetVersion
+     *            The target version for generated source files.
+     *            <p>
+     *            Default: <code>1.6</code>.
+     */
+    public void setTargetVersion(String targetVersion) {
+        this.targetVersion = targetVersion;
+    }
+
+    /**
+     * Sets the 'includeDynamicAccessors' property of this class
+     *
+     * @param includeDynamicAccessors
+     *            Whether to include dynamic getters, setters, and builders or to omit these methods.
+     */
+    public void setIncludeDynamicAccessors(boolean includeDynamicAccessors) {
+        this.includeDynamicAccessors = includeDynamicAccessors;
+    }
+
     @Override
     public boolean isGenerateBuilders() {
         return generateBuilders;
@@ -726,5 +752,15 @@ public class Jsonschema2PojoTask extends Task implements GenerationConfig {
     @Override
     public boolean isIncludeAccessors() {
         return includeAccessors;
+    }
+
+    @Override
+    public String getTargetVersion() {
+        return targetVersion;
+    }
+
+    @Override
+    public boolean isIncludeDynamicAccessors() {
+        return includeDynamicAccessors;
     }
 }

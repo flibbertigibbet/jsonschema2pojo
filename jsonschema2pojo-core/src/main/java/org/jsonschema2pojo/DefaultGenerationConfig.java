@@ -255,4 +255,20 @@ public class DefaultGenerationConfig implements GenerationConfig {
     public boolean isIncludeAccessors() {
         return true;
     }
+
+    /**
+     * @return <code>1.6</code>
+     */
+    @Override
+    public String getTargetVersion() {
+        return "1.6";
+    }
+
+    /**
+     * @return <code>true</code>
+     */
+    @Override
+    public boolean isIncludeDynamicAccessors() {
+        return true;
+    }
 }

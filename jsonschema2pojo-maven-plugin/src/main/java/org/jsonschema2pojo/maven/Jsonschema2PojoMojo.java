@@ -434,6 +434,24 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
      * @since 0.4.15
      */
     private boolean includeAccessors = true;
+    
+    /**
+     * The target version for generated source files.
+     * 
+     * @parameter expression="${maven.compiler.target}"
+     *            default="1.6"
+     * @since 0.4.17
+     */
+    private String targetVersion = "1.6";
+
+    /**
+     * Whether to include dynamic getters, setters, and builders or to omit these methods.
+     *
+     * @parameter expression="${jsonschema2pojo.includeDynamicAccessors}"
+     *            default="true"
+     * @since 0.4.17
+     */
+    private boolean includeDynamicAccessors = true;
 
     /**
      * The project being built.
@@ -719,6 +737,16 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
     @Override
     public boolean isIncludeAccessors() {
         return includeAccessors;
+    }
+
+    @Override
+    public String getTargetVersion() {
+        return targetVersion;
+    }
+
+    @Override
+    public boolean isIncludeDynamicAccessors() {
+        return includeDynamicAccessors;
     }
 
 }

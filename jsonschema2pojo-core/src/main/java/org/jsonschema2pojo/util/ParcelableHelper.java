@@ -19,6 +19,7 @@ package org.jsonschema2pojo.util;
 import android.os.Parcel;
 import android.os.Parcelable.Creator;
 import com.sun.codemodel.*;
+import static org.jsonschema2pojo.util.Models.*;
 
 
 public class ParcelableHelper {
@@ -29,6 +30,9 @@ public class ParcelableHelper {
         method.param(int.class, "flags");
         
         for (JFieldVar f : jclass.fields().values()) {
+            if( (f.mods().getValue() & JMod.STATIC) == JMod.STATIC ) {
+                continue;
+            }
             if (f.type().erasure().name().equals("List")) {
                 method.body().invoke(dest, "writeList").arg(f);
             } else {
@@ -63,7 +67,11 @@ public class ParcelableHelper {
         JMethod createFromParcel = creatorClass.method(JMod.PUBLIC, jclass, "createFromParcel");
         JVar in = createFromParcel.param(Parcel.class, "in");
         JVar instance = createFromParcel.body().decl(jclass, "instance", JExpr._new(jclass));
+        suppressWarnings(createFromParcel, "unchecked");
         for (JFieldVar f : jclass.fields().values()) {
+            if( (f.mods().getValue() & JMod.STATIC) == JMod.STATIC ) {
+                continue;
+            }
             if (f.type().erasure().name().equals("List")) {
                 createFromParcel.body()
                         .invoke(in, "readList")

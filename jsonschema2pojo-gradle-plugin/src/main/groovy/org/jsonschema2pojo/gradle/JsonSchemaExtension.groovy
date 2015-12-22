@@ -41,6 +41,7 @@ public class JsonSchemaExtension implements GenerationConfig {
   boolean generateBuilders
   boolean includeAccessors
   boolean includeAdditionalProperties
+  boolean includeDynamicAccessors
   boolean includeConstructors
   boolean constructorsRequiredPropertiesOnly
   boolean includeHashcodeAndEquals
@@ -52,11 +53,15 @@ public class JsonSchemaExtension implements GenerationConfig {
   char[] propertyWordDelimiters
   boolean removeOldOutput
   SourceType sourceType
+  String targetVersion
   boolean useCommonsLang3
   boolean useDoubleNumbers
   boolean useJodaDates
   boolean useJodaLocalDates
   boolean useJodaLocalTimes
+  String dateTimeType
+  String dateType
+  String timeType
   boolean useLongIntegers
   boolean usePrimitives
   FileFilter fileFilter
@@ -83,6 +88,9 @@ public class JsonSchemaExtension implements GenerationConfig {
     useJodaDates = false
     useJodaLocalDates = false
     useJodaLocalTimes = false
+    dateTimeType = null
+    dateType = null
+    timeType = null
     useCommonsLang3 = false
     parcelable = false
     fileFilter = new AllFileFilter()
@@ -91,6 +99,8 @@ public class JsonSchemaExtension implements GenerationConfig {
     classNameSuffix = ''
     includeAdditionalProperties = true
     includeAccessors = true
+    targetVersion = '1.6'
+    includeDynamicAccessors = true
   }
 
   @Override
@@ -147,11 +157,16 @@ public class JsonSchemaExtension implements GenerationConfig {
        |useJodaDates = ${useJodaDates}
        |useJodaLocalDates = ${useJodaLocalDates}
        |useJodaLocalTimes = ${useJodaLocalTimes}
+       |dateTimeType = ${dateTimeType}
+       |dateType = ${dateType}
+       |timeType = ${timeType}
        |useCommonsLang3 = ${useCommonsLang3}
        |parcelable = ${parcelable}
        |initializeCollections = ${initializeCollections}
        |classNamePrefix = ${classNamePrefix}
        |classNameSuffix = ${classNameSuffix}
+       |targetVersion = ${targetVersion}
+       |includeDynamicAccessors = ${includeDynamicAccessors}
      """.stripMargin()
   }
 }

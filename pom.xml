@@ -10,7 +10,7 @@
 
     <groupId>org.jsonschema2pojo</groupId>
     <artifactId>jsonschema2pojo</artifactId>
-    <version>0.4.17-SNAPSHOT</version>
+    <version>0.4.19-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     <name>jsonschema2pojo</name>
@@ -163,6 +163,8 @@
                     <encoding>UTF-8</encoding>
                     <source>1.6</source>
                     <target>1.6</target>
+                    <testSource>1.7</testSource>
+                    <testTarget>1.7</testTarget>
                 </configuration>
             </plugin>
             <plugin>
@@ -281,7 +283,7 @@
             <dependency>
                 <groupId>com.google.android</groupId>
                 <artifactId>android</artifactId>
-                <version>2.1.2</version>
+                <version>4.0.1.2</version>
             </dependency>
             <dependency>
                 <groupId>com.google.code.gson</groupId>

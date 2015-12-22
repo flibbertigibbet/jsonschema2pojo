@@ -111,6 +111,15 @@ public class Arguments implements GenerationConfig {
     @Parameter(names = { "-jt", "--joda-local-times" }, description = "Whether to use org.joda.time.LocalTime instead" + "of String when adding time type fields to generated Java types.")
     private boolean useJodaLocalTimes = false;
 
+    @Parameter(names = { "-dtt", "--datetime-class" }, description = "Specify datetime class")
+    private String dateTimeType = null;
+
+    @Parameter(names = { "-tt", "--time-class" }, description = "Specify time class")
+    private String timeType = null;
+
+    @Parameter(names = { "-dt", "--date-class" }, description = "Specify date class")
+    private String dateType = null;
+
     @Parameter(names = { "-c3", "--commons-lang3" }, description = "Whether to use commons-lang 3.x imports instead of commons-lang 2.x imports when adding equals, hashCode and toString methods.")
     private boolean useCommonsLang3 = false;
 
@@ -131,6 +140,12 @@ public class Arguments implements GenerationConfig {
 
     @Parameter(names = { "-da", "--disable-accessors" }, description = "Whether to omit getter/setter methods and create public fields instead.")
     private boolean disableAccessors = false;
+    
+    @Parameter(names = { "-tv", "--target-version" }, description = "The target version for generated source files.")
+    private String targetVersion = "1.6";
+    
+    @Parameter(names = { "-dda", "--disable-dynamic-accessors" }, description = "Disable dynamic getter, setter, and builder support on generated types.")
+    private boolean disableDynamicAccessors = false;
 
     private static final int EXIT_OKAY = 0;
     private static final int EXIT_ERROR = 1;
@@ -319,6 +334,31 @@ public class Arguments implements GenerationConfig {
     @Override
     public boolean isIncludeAccessors() {
         return !disableAccessors;
+    }
+
+    @Override
+    public String getTargetVersion() {
+        return targetVersion;
+    }
+
+    @Override
+    public boolean isIncludeDynamicAccessors() {
+        return !disableDynamicAccessors;
+    }
+
+    @Override
+    public String getDateTimeType() {
+        return dateTimeType;
+    }
+
+    @Override
+    public String getDateType() {
+        return dateType;
+    }
+
+    @Override
+    public String getTimeType() {
+        return timeType;
     }
 
 }

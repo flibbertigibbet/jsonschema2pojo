@@ -49,8 +49,8 @@ public class SchemaStore {
             if (id.toString().contains("#")) {
                 JsonNode childContent = fragmentResolver.resolve(content, '#' + substringAfter(id.toString(), "#"));
                 schemas.put(id, new Schema(id, childContent, content));
-        	} else {
-        		schemas.put(id, new Schema(id, content, content));
+            } else {
+                schemas.put(id, new Schema(id, content, content));
             }
         }
 
@@ -87,7 +87,7 @@ public class SchemaStore {
         URI id = (parent == null || parent.getId() == null) ? URI.create(path) : parent.getId().resolve(path);
 
         if (selfReferenceWithoutParentFile(parent, path)) {
-            schemas.put(id, new Schema(id, fragmentResolver.resolve(parent.getParentContent(), path), parent.getContent()));
+            schemas.put(id, new Schema(id, fragmentResolver.resolve(parent.getParentContent(), path), parent.getParentContent()));
             return schemas.get(id);
         }
         

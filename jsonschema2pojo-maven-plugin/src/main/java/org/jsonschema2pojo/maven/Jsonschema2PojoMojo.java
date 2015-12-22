@@ -333,6 +333,10 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
      */
     private boolean useJodaLocalTimes = false;
 
+    private String dateTimeType = null;
+    private String timeType = null;
+    private String dateType = null;
+
     /**
      * Whether to use commons-lang 3.x imports instead of commons-lang 2.x
      * imports when adding equals, hashCode and toString methods.
@@ -434,6 +438,24 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
      * @since 0.4.15
      */
     private boolean includeAccessors = true;
+    
+    /**
+     * The target version for generated source files.
+     * 
+     * @parameter expression="${maven.compiler.target}"
+     *            default="1.6"
+     * @since 0.4.17
+     */
+    private String targetVersion = "1.6";
+
+    /**
+     * Whether to include dynamic getters, setters, and builders or to omit these methods.
+     *
+     * @parameter expression="${jsonschema2pojo.includeDynamicAccessors}"
+     *            default="true"
+     * @since 0.4.17
+     */
+    private boolean includeDynamicAccessors = true;
 
     /**
      * The project being built.
@@ -719,6 +741,31 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
     @Override
     public boolean isIncludeAccessors() {
         return includeAccessors;
+    }
+
+    @Override
+    public String getTargetVersion() {
+        return targetVersion;
+    }
+
+    @Override
+    public boolean isIncludeDynamicAccessors() {
+        return includeDynamicAccessors;
+    }
+
+    @Override
+    public String getDateTimeType() {
+        return dateTimeType;
+    }
+
+    @Override
+    public String getDateType() {
+        return dateType;
+    }
+
+    @Override
+    public String getTimeType() {
+        return timeType;
     }
 
 }

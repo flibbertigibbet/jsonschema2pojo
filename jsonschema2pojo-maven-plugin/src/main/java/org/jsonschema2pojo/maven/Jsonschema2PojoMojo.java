@@ -333,6 +333,10 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
      */
     private boolean useJodaLocalTimes = false;
 
+    private String dateTimeType = null;
+    private String timeType = null;
+    private String dateType = null;
+
     /**
      * Whether to use commons-lang 3.x imports instead of commons-lang 2.x
      * imports when adding equals, hashCode and toString methods.
@@ -747,6 +751,21 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
     @Override
     public boolean isIncludeDynamicAccessors() {
         return includeDynamicAccessors;
+    }
+
+    @Override
+    public String getDateTimeType() {
+        return dateTimeType;
+    }
+
+    @Override
+    public String getDateType() {
+        return dateType;
+    }
+
+    @Override
+    public String getTimeType() {
+        return timeType;
     }
 
 }

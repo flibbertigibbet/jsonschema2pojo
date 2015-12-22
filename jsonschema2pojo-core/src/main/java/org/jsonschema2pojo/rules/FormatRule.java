@@ -26,9 +26,12 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.jsonschema2pojo.GenerationConfig;
 import org.jsonschema2pojo.Schema;
+import org.jsonschema2pojo.exception.GenerationException;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sun.codemodel.JType;
+import static org.apache.commons.lang.StringUtils.isEmpty;
+import static java.lang.String.format;
 
 /**
  * Applies the "format" schema rule.
@@ -128,14 +131,44 @@ public class FormatRule implements Rule<JType, JType> {
     }
 
     private Class<?> getDateTimeType() {
+        String type=ruleFactory.getGenerationConfig().getDateTimeType();
+        if (!isEmpty(type)){
+            try {
+                Class<?> clazz=Class.forName(type);
+                return clazz;
+            }
+            catch (ClassNotFoundException e) {
+                throw new GenerationException(format("could not load java type %s for date-time format", type), e);
+            }
+        }
         return ruleFactory.getGenerationConfig().isUseJodaDates() ? DateTime.class : Date.class;
     }
 
     private Class<?> getDateOnlyType() {
+        String type=ruleFactory.getGenerationConfig().getDateType();
+        if (!isEmpty(type)){
+            try {
+                Class<?> clazz=Class.forName(type);
+                return clazz;
+            }
+            catch (ClassNotFoundException e) {
+                throw new GenerationException(format("could not load java type %s for date format", type), e);
+            }
+        }
         return ruleFactory.getGenerationConfig().isUseJodaLocalDates() ? LocalDate.class : String.class;
     }
 
     private Class<?> getTimeOnlyType() {
+        String type=ruleFactory.getGenerationConfig().getTimeType();
+        if (!isEmpty(type)){
+            try {
+                Class<?> clazz=Class.forName(type);
+                return clazz;
+            }
+            catch (ClassNotFoundException e) {
+                throw new GenerationException(format("could not load java type %s for time format", type), e);
+            }
+        }
         return ruleFactory.getGenerationConfig().isUseJodaLocalTimes() ? LocalTime.class : String.class;
     }
 

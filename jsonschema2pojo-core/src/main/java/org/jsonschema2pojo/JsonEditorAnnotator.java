@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.gson.JsonArray;
 import com.sun.codemodel.*;
 import org.jsonschema2pojo.annotations.*;
 
@@ -98,6 +99,48 @@ public class JsonEditorAnnotator extends AbstractAnnotator {
             if (foundFieldType != null) {
                 JAnnotationUse fieldTypeAnnotation = field.annotate(FieldType.class);
                 fieldTypeAnnotation.param("value", foundFieldType);
+
+                /* Additional annotations for reference types. To see how they're built in DRIVER:
+                 * https://github.com/WorldBank-Transport/DRIVER/blob/develop/schema_editor/app/scripts/schemas/schemas-service.js
+                 * NB: in DRIVER usage of json-editor, referenced field is always watch.target,
+                 * enumSource value is always _localId, and id is always the default 'item'.
+                 */
+                if (foundFieldType == FieldTypes.reference) {
+
+                    // annotate with watch target (referenced field)
+                    JsonNode watch = propertyNode.get("watch");
+                    if (watch != null && watch.has("target")) {
+                        String target = watch.get("target").asText();
+                        if (target != null) {
+                            JAnnotationUse watchTargetAnnotation = field.annotate(WatchTarget.class);
+                            watchTargetAnnotation.param("value", target);
+                        } else {
+                            Log.warning("No watch target found for reference type field " + propertyName);
+                        }
+                    } else {
+                        Log.warning("No watch/target found on reference type field " + propertyName);
+                    }
+
+                    // annotate with label template to use from referenced field
+                    JsonNode enumSources = propertyNode.get("enumSource");
+                    if (enumSources != null && enumSources.isArray()) {
+                        // expect DRIVER enumSources to be a list with single element
+                        JsonNode enumSource = enumSources.get(0);
+                        if (enumSource != null && enumSource.has("title")) {
+                            String titlePattern = enumSource.get("title").asText();
+                            if (titlePattern != null) {
+                                JAnnotationUse titlePatternAnnotation = field.annotate(ReferenceTitlePattern.class);
+                                titlePatternAnnotation.param("value", titlePattern);
+                            } else {
+                                Log.info("No title pattern set for reference type field " + propertyName);
+                            }
+                        } else {
+                            Log.warning("No enumSource/title found for reference type field " + propertyName);
+                        }
+                    } else {
+                        Log.warning("No enumSources found for reference type field " + propertyName);
+                    }
+                }
             } else {
                 Log.info("No field type found for " + fieldType);
             }

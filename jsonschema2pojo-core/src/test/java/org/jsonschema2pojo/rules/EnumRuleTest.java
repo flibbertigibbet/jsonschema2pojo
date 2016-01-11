@@ -71,8 +71,8 @@ public class EnumRuleTest {
         JType result1 = rule.apply("status", enumNode, jpackage, schema);
         JType result2 = rule.apply("status", enumNode, jpackage, schema);
 
-        assertThat(result1.fullName(), is("org.jsonschema2pojo.rules.Status"));
-        assertThat(result2.fullName(), is("org.jsonschema2pojo.rules.Status_"));
+        assertThat(result1.fullName(), is("org.jsonschema2pojo.rules.StatusEnum"));
+        assertThat(result2.fullName(), is("org.jsonschema2pojo.rules.StatusEnum_"));
     }
 
     private static class FirstArgAnswer<T> implements Answer<T> {

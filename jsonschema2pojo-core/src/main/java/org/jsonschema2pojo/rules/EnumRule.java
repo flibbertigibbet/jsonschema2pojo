@@ -227,7 +227,8 @@ public class EnumRule implements Rule<JClassContainer, JType> {
     private String getEnumName(String nodeName, JClassContainer container) {
         String className = ruleFactory.getNameHelper().replaceIllegalCharacters(capitalize(nodeName));
         String normalizedName = ruleFactory.getNameHelper().normalizeName(className);
-        return makeUnique(normalizedName, container);
+        // suffix enum names with "Enum" to avoid name clash with capitalized field names
+        return makeUnique(normalizedName + "Enum", container);
     }
 
     private String makeUnique(String className, JClassContainer container) {

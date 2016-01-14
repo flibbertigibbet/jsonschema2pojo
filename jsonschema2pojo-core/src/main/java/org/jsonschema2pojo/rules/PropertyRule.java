@@ -76,6 +76,11 @@ public class PropertyRule implements Rule<JDefinedClass, JDefinedClass> {
         node = resolveRefs(node, schema);
 
         int accessModifier = ruleFactory.getGenerationConfig().isIncludeAccessors() ? JMod.PRIVATE : JMod.PUBLIC;
+
+        if (nodeName.equals("_localId")) {
+            accessModifier |= JMod.FINAL; // make _localId fields final (assigned UUID)
+        }
+
         JFieldVar field = jclass.field(accessModifier, propertyType, propertyName);
         propertyAnnotations(nodeName, node, schema, field);
 

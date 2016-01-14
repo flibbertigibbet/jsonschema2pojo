@@ -34,6 +34,8 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
+
 import static org.apache.commons.lang3.StringUtils.*;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -92,9 +94,10 @@ public class DefaultRule implements Rule<JFieldVar, JFieldVar> {
         } else if (fieldType.startsWith(String.class.getName()) ) {
             if (node != null) {
                 field.init(getDefaultValue(field.type(), node));
-            } else if (field.name().equals("LocalId")) {
+            } else if (nodeName.equals("_localId")) {
                 // initialize _localId fields with a random UUID
-                field.init(JExpr.direct("UUID.randomUUID().toString()"));
+                field.init(field.type().owner().ref(UUID.class)
+                        .staticInvoke("randomUUID").invoke("toString"));
             }
         } else if (defaultPresent) {
             field.init(getDefaultValue(field.type(), node));

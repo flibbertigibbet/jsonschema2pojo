@@ -20,6 +20,7 @@ import org.jsonschema2pojo.Schema;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sun.codemodel.JType;
+import org.jsonschema2pojo.media.SerializableMedia;
 
 /**
  * <p>
@@ -63,7 +64,7 @@ public class MediaRule implements Rule<JType, JType> {
      *            the type with the media node.  This must be java.lang.String.
      * @param schema
      *            the schema containing the property.
-     * @return byte[] when a binary encoding is specified, baseType otherwise.
+     * @return {@link SerializableMedia} when a binary encoding is specified, baseType otherwise.
      * @since 0.4.2
      */
     @Override
@@ -72,6 +73,6 @@ public class MediaRule implements Rule<JType, JType> {
             return baseType;
         }
 
-        return baseType.owner().ref(byte[].class);
+        return baseType.owner().ref(SerializableMedia.class);
     }
 }

@@ -16,6 +16,7 @@
 
 package org.jsonschema2pojo.media;
 
+import android.graphics.BitmapFactory;
 import android.util.Base64;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
@@ -43,6 +44,7 @@ public class SerializableMedia {
      * URI in {@link SerializableMedia#path} if set
      */
     public static class SerializableMediaByteArrayAdapter extends TypeAdapter<SerializableMedia> {
+
         public SerializableMedia read(JsonReader reader) throws IOException {
             if (reader.peek() == JsonToken.NULL) {
                 reader.nextNull();
@@ -59,19 +61,29 @@ public class SerializableMedia {
                 return;
             }
 
-            // just use data field directly if set
-            if (value.data != null) {
-                writer.value(Base64.encodeToString(value.data, Base64.NO_WRAP));
-            }
-
             // attempt to read in image at path into data
-            if (value.path != null && !value.path.isEmpty()) {
+            if (value.data == null && value.path != null && !value.path.isEmpty()) {
                 File file = new File(value.path);
-                writer.value(Base64.encodeToString(FileUtils.readFileToByteArray(file), Base64.NO_WRAP));
-                return;
+                value.data = FileUtils.readFileToByteArray(file);
             }
 
-            writer.nullValue();
+            if (value.data != null) {
+                // peek at image metadata to get mime type
+                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                bmOptions.inJustDecodeBounds = true;
+                BitmapFactory.decodeByteArray(value.data, 0, value.data.length, bmOptions);
+                String mimeType = bmOptions.outMimeType;
+
+                // handle unknown mime type, or error getting it
+                if (mimeType == null) {
+                    mimeType = "image/jpeg";
+                }
+
+                // prepend byte string with URI scheme, like: data:image/jpeg;base64,
+                writer.value("data:" + mimeType + ";base64," + Base64.encodeToString(value.data, Base64.NO_WRAP));
+            } else {
+                writer.nullValue();
+            }
         }
     }
 

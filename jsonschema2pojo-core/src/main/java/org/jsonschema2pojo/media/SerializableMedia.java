@@ -61,8 +61,10 @@ public class SerializableMedia {
                 return;
             }
 
-            // attempt to read in image at path into data
+            // attempt to read in image at path into data field
+            boolean readFromPath = false;
             if (value.data == null && value.path != null && !value.path.isEmpty()) {
+                readFromPath = true;
                 File file = new File(value.path);
                 value.data = FileUtils.readFileToByteArray(file);
             }
@@ -81,6 +83,13 @@ public class SerializableMedia {
 
                 // prepend byte string with URI scheme, like: data:image/jpeg;base64,
                 writer.value("data:" + mimeType + ";base64," + Base64.encodeToString(value.data, Base64.NO_WRAP));
+
+                writer.flush(); // force an output stream flush after serializing media
+
+                // if bytes were read in from file for this serialization, clear them back out when done
+                if (readFromPath) {
+                    value.data = null;
+                }
             } else {
                 writer.nullValue();
             }

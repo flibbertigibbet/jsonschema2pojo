@@ -92,6 +92,12 @@ public class JsonEditorAnnotator extends AbstractAnnotator {
             multipleAnnotation.param("value", multiple);
         }
 
+        if (propertyNode.has("format")) {
+            String format = propertyNode.get("format").asText();
+            JAnnotationUse formatAnnotation = field.annotate(FieldFormat.class);
+            formatAnnotation.param("value", format);
+        }
+
         if (propertyNode.has("fieldType")) {
             String fieldType = propertyNode.get("fieldType").asText();
             FieldTypes foundFieldType = FieldTypes.valueOf(fieldType);

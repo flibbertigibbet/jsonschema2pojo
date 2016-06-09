@@ -22,7 +22,8 @@ import com.sun.codemodel.JType;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jsonschema2pojo.GenerationConfig;
 
-import static java.lang.Character.isDigit;
+import static java.lang.Character.isJavaIdentifierPart;
+import static java.lang.Character.isJavaIdentifierStart;
 import static javax.lang.model.SourceVersion.isKeyword;
 import static org.apache.commons.lang3.StringUtils.capitalize;
 import static org.apache.commons.lang3.StringUtils.containsAny;
@@ -30,25 +31,28 @@ import static org.apache.commons.lang3.StringUtils.remove;
 
 public class NameHelper {
 
-    public static final String ILLEGAL_CHARACTER_REGEX = "[^0-9a-zA-Z_$]";
-
     private final GenerationConfig generationConfig;
 
     public NameHelper(GenerationConfig generationConfig) {
         this.generationConfig = generationConfig;
     }
 
-    public String replaceIllegalCharacters(String name) {
-        return name.replaceAll(ILLEGAL_CHARACTER_REGEX, "_");
+    public static String replaceIllegalCharacters(String name) {
+        for (char character: name.toCharArray()) {
+            if (!Character.isJavaIdentifierPart(character)) {
+                name = name.replace(String.valueOf(character), "_");
+            }
+        }
+
+        if (!Character.isJavaIdentifierStart(name.charAt(0))) {
+            name = "_" + name;
+        }
+
+        return name;
     }
 
     public String normalizeName(String name) {
         name = capitalizeTrailingWords(name);
-
-        if (isDigit(name.charAt(0))) {
-            name = "_" + name;
-        }
-
         return name;
     }
 

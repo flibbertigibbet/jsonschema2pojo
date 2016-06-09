@@ -172,6 +172,18 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
     private boolean useDoubleNumbers = true;
 
     /**
+     * Whether to use the java type <code>BigDecimal</code> instead of
+     * <code>float</code> (or {@link java.lang.Float})  when representing
+     * the JSON Schema type 'number'. Note that this configuration overrides
+     * <code>useDoubleNumbers</code>.
+     *
+     * @parameter expression="${jsonschema2pojo.useBigDecimals}"
+     *            default-value="false"
+     * @since TODO
+     */
+    private boolean useBigDecimals = false;
+
+    /**
      * Whether to include <code>hashCode</code> and <code>equals</code> methods
      * in generated Java types.
      *
@@ -203,6 +215,8 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
      * <a href="http://jackson.codehaus.org/">Jackson 1.x</a> library)</li>
      * <li><code>gson</code> (apply annotations from the
      * <a href="https://code.google.com/p/google-gson/">gson</a> library)</li>
+     * <li><code>moshi1</code> (apply annotations from the
+     * <a href="https://github.com/square/moshi">moshi 1.x</a> library)</li>
      * <li><code>none</code> (apply no annotations at all)</li>
      * </ul>
      *
@@ -333,8 +347,31 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
      */
     private boolean useJodaLocalTimes = false;
 
+    /**
+     * What type to use instead of string when adding string type fields of
+     * format date-time to generated Java types.
+     *
+     * @parameter expression="${jsonschema2pojo.dateTimeType}"
+     * @since 0.4.22
+     */
     private String dateTimeType = null;
+
+    /**
+     * What type to use instead of string when adding string type fields of
+     * format time (not date-time) to generated Java types.
+     *
+     * @parameter expression="${jsonschema2pojo.timeType}"
+     * @since 0.4.22
+     */
     private String timeType = null;
+
+    /**
+     * What type to use instead of string when adding string type fields of
+     * format date (not date-time) to generated Java types.
+     *
+     * @parameter expression="${jsonschema2pojo.dateType}"
+     * @since 0.4.22
+     */
     private String dateType = null;
 
     /**
@@ -357,6 +394,14 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
     private boolean parcelable = false;
 
     /**
+     * Whether to make the generated types 'serializable'.
+     *
+     * @parameter expression="${jsonschema2pojo.serializable}" default="false"
+     * @since 0.4.23
+     */
+    private boolean serializable = false;
+
+    /**
      * Whether to initialize Set and List fields as empty collections, or leave
      * them as <code>null</code>.
      *
@@ -375,7 +420,9 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
     private String[] includes;
 
     /**
-     * List of file patterns to exclude.
+     * List of file patterns to exclude.  This only applies to the initial scan of
+     * the file system and will not prevent inclusion through a "$ref" in one of the
+     * schemas.
      *
      * @parameter
      * @since 0.4.3
@@ -397,6 +444,16 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
      * @since 0.4.6
      */
     private String classNameSuffix = "";
+
+    /**
+     * The file extenations that should be considered as file name extensions,
+     * and therefore ignored, when creating Java class names.
+     *
+     * @parameter expression="${jsonschema2pojo.fileExtensions}"
+     *            default-value=""
+     * @since 0.4.23
+     */
+    private String[] fileExtensions = new String[] {};
 
     /**
      * Whether to generate constructors or not
@@ -438,10 +495,10 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
      * @since 0.4.15
      */
     private boolean includeAccessors = true;
-    
+
     /**
      * The target version for generated source files.
-     * 
+     *
      * @parameter expression="${maven.compiler.target}"
      *            default-value="1.6"
      * @since 0.4.17
@@ -691,6 +748,11 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
     }
 
     @Override
+    public boolean isSerializable() {
+        return serializable;
+    }
+
+    @Override
     public FileFilter getFileFilter() {
         return fileFilter;
     }
@@ -721,6 +783,11 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
     @Override
     public String getClassNameSuffix() {
         return classNameSuffix;
+    }
+
+    @Override
+    public String[] getFileExtensions() {
+        return fileExtensions;
     }
 
     @Override
@@ -768,4 +835,8 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
         return timeType;
     }
 
+    @Override
+    public boolean isUseBigDecimals() {
+        return useBigDecimals;
+    }
 }

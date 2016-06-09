@@ -15,8 +15,8 @@
 #
 set -e
 
-if [[ ! ("$#" == 4 ) ]]; then
-    echo 'Usage: jsonschema2pojo-upload-release <old version> <new version> <github username> <github password>'
+if [[ ! ("$#" == 3 ) ]]; then
+    echo 'Usage: jsonschema2pojo-upload-release <old version> <new version> <github token>'
     exit 1
 fi
 
@@ -33,8 +33,7 @@ fi
 OLD_VERSION=$1
 VERSION=$2
 WORKING_DIR=/tmp/jsonschema2pojo-$VERSION
-GITHUB_USERNAME=$3
-GITHUB_PASSWORD=$4
+GITHUB_TOKEN=$3
 
 # recreate release dir
 rm -rf $WORKING_DIR
@@ -43,11 +42,9 @@ pushd $WORKING_DIR
 
     # download artifacts
     wget -U NoSuchBrowser/1.0 http://repo1.maven.org/maven2/org/jsonschema2pojo/jsonschema2pojo/$VERSION/jsonschema2pojo-$VERSION-javadoc.jar
-    wget -U NoSuchBrowser/1.0 http://repo1.maven.org/maven2/org/jsonschema2pojo/jsonschema2pojo-cli/$VERSION/jsonschema2pojo-cli-$VERSION-sources.jar
     wget -U NoSuchBrowser/1.0 http://repo1.maven.org/maven2/org/jsonschema2pojo/jsonschema2pojo-cli/$VERSION/jsonschema2pojo-cli-$VERSION.jar
     wget -U NoSuchBrowser/1.0 http://repo1.maven.org/maven2/org/jsonschema2pojo/jsonschema2pojo-cli/$VERSION/jsonschema2pojo-cli-$VERSION.bat
     wget -U NoSuchBrowser/1.0 http://repo1.maven.org/maven2/org/jsonschema2pojo/jsonschema2pojo-cli/$VERSION/jsonschema2pojo-cli-$VERSION.sh
-    wget -U NoSuchBrowser/1.0 http://repo1.maven.org/maven2/org/jsonschema2pojo/jsonschema2pojo-core/$VERSION/jsonschema2pojo-core-$VERSION-sources.jar
 
     # download dependencies for cli
     wget -U NoSuchBrowser/1.0 http://repo1.maven.org/maven2/org/jsonschema2pojo/jsonschema2pojo-cli/$VERSION/jsonschema2pojo-cli-$VERSION.pom -O pom.xml
@@ -63,6 +60,7 @@ pushd $WORKING_DIR
     # create the release archives
     pushd ..
         tar czf jsonschema2pojo-$VERSION.tar.gz jsonschema2pojo-$VERSION
+        zip -r jsonschema2pojo-$VERSION.zip jsonschema2pojo-$VERSION
     popd
 
     # clone gh-pages to update & add docs
@@ -135,14 +133,19 @@ pushd $WORKING_DIR
     popd
 
     # upload to github
-    RELEASE=$(curl --user "$GITHUB_USERNAME:$GITHUB_PASSWORD" -sX POST \
+    RELEASE=$(curl -H "Authorization: token $GITHUB_TOKEN" -sX POST \
                   -d "{\"tag_name\":\"jsonschema2pojo-$VERSION\", \"name\":\"$VERSION\"}" \
                   "https://api.github.com/repos/joelittlejohn/jsonschema2pojo/releases")
+
     UPLOAD_URL=$(echo $RELEASE | jq -r .upload_url | sed "s/{?.*}/?name=jsonschema2pojo-$VERSION.tar.gz/")
-    RELEASE_PAGE=$(echo $RELEASE | jq -r .html_url)
-    curl --user "$GITHUB_USERNAME:$GITHUB_PASSWORD" -X POST \
+    curl -H "Authorization: token $GITHUB_TOKEN" -X POST \
         -H"Content-Type: application/x-tar" --data-binary @../jsonschema2pojo-$VERSION.tar.gz "$UPLOAD_URL" -o /dev/null
 
+    UPLOAD_URL=$(echo $RELEASE | jq -r .upload_url | sed "s/{?.*}/?name=jsonschema2pojo-$VERSION.zip/")
+    curl -H "Authorization: token $GITHUB_TOKEN" -X POST \
+         -H"Content-Type: application/zip" --data-binary @../jsonschema2pojo-$VERSION.zip "$UPLOAD_URL" -o /dev/null
+
+    RELEASE_PAGE=$(echo $RELEASE | jq -r .html_url)
 popd
 
 rm -rf $WORKING_DIR

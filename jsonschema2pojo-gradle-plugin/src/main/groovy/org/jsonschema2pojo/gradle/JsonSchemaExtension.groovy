@@ -36,6 +36,7 @@ public class JsonSchemaExtension implements GenerationConfig {
   AnnotationStyle annotationStyle
   String classNamePrefix
   String classNameSuffix
+  String[] fileExtensions
   Class<? extends Annotator> customAnnotator
   Class<? extends RuleFactory> customRuleFactory
   boolean generateBuilders
@@ -50,12 +51,14 @@ public class JsonSchemaExtension implements GenerationConfig {
   boolean initializeCollections
   String outputEncoding
   boolean parcelable
+  boolean serializable
   char[] propertyWordDelimiters
   boolean removeOldOutput
   SourceType sourceType
   String targetVersion
   boolean useCommonsLang3
   boolean useDoubleNumbers
+  boolean useBigDecimals
   boolean useJodaDates
   boolean useJodaLocalDates
   boolean useJodaLocalTimes
@@ -75,6 +78,7 @@ public class JsonSchemaExtension implements GenerationConfig {
     propertyWordDelimiters = [] as char[]
     useLongIntegers = false
     useDoubleNumbers = true
+    useBigDecimals = false
     includeHashcodeAndEquals = true
     includeConstructors = false
     constructorsRequiredPropertiesOnly = false
@@ -93,10 +97,12 @@ public class JsonSchemaExtension implements GenerationConfig {
     timeType = null
     useCommonsLang3 = false
     parcelable = false
+    serializable = false
     fileFilter = new AllFileFilter()
     initializeCollections = true
     classNamePrefix = ''
     classNameSuffix = ''
+    fileExtensions = [] as String[]
     includeAdditionalProperties = true
     includeAccessors = true
     targetVersion = '1.6'
@@ -144,6 +150,7 @@ public class JsonSchemaExtension implements GenerationConfig {
        |propertyWordDelimiters = ${Arrays.toString(propertyWordDelimiters)}
        |useLongIntegers = ${useLongIntegers}
        |useDoubleNumbers = ${useDoubleNumbers}
+       |useBigDecimals = ${useBigDecimals}
        |includeHashcodeAndEquals = ${includeHashcodeAndEquals}
        |includeConstructors = ${includeConstructors}
        |includeToString = ${includeToString}
@@ -162,9 +169,11 @@ public class JsonSchemaExtension implements GenerationConfig {
        |timeType = ${timeType}
        |useCommonsLang3 = ${useCommonsLang3}
        |parcelable = ${parcelable}
+       |serializable = ${serializable}
        |initializeCollections = ${initializeCollections}
        |classNamePrefix = ${classNamePrefix}
        |classNameSuffix = ${classNameSuffix}
+       |fileExtensions = ${Arrays.toString(fileExtensions)}
        |targetVersion = ${targetVersion}
        |includeDynamicAccessors = ${includeDynamicAccessors}
      """.stripMargin()

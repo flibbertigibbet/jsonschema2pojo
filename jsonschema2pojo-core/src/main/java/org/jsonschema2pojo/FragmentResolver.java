@@ -19,6 +19,8 @@ package org.jsonschema2pojo;
 import static java.util.Arrays.*;
 import static org.apache.commons.lang3.StringUtils.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +40,12 @@ public class FragmentResolver {
             return tree;
         } else {
             String part = path.remove(0);
+            try {
+                // TODO: get output encoding from config
+                part = URLDecoder.decode(part, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
 
             if (tree.isArray()) {
                 try {

@@ -42,7 +42,7 @@ import com.sun.codemodel.JType;
 public class FormatRuleTest {
 
     private GenerationConfig config = mock(GenerationConfig.class);
-    private FormatRule rule = new FormatRule(new RuleFactory(config, new NoopAnnotator(), new SchemaStore()));
+    private FormatRule rule = new FormatRule(new RuleFactory(config, new NoopAnnotator()));
 
     private final String formatValue;
     private final Class<?> expectedType;

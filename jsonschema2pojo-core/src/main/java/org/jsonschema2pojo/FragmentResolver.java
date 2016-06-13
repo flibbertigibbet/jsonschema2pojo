@@ -19,12 +19,21 @@ package org.jsonschema2pojo;
 import static java.util.Arrays.*;
 import static org.apache.commons.lang3.StringUtils.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class FragmentResolver {
+
+    protected final String encoding;
+
+    public FragmentResolver(String encoding) {
+        this.encoding = encoding;
+    }
 
     public JsonNode resolve(JsonNode tree, String path) {
 
@@ -38,6 +47,12 @@ public class FragmentResolver {
             return tree;
         } else {
             String part = path.remove(0);
+            try {
+                part = URLDecoder.decode(part, encoding);
+            } catch (UnsupportedEncodingException e) {
+                Log.e("FragmentResolver", "Could not decode path part from encoding " + encoding);
+                e.printStackTrace();
+            }
 
             if (tree.isArray()) {
                 try {

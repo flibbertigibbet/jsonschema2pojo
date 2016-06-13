@@ -31,12 +31,14 @@ import com.sun.codemodel.JType;
 
 public class SchemaStoreTest {
 
+    protected static final GenerationConfig config = new DefaultGenerationConfig();
+
     @Test
     public void createWithAbsolutePath() throws URISyntaxException {
 
         URI schemaUri = getClass().getResource("/schema/address.json").toURI();
 
-        Schema schema = new SchemaStore().create(schemaUri);
+        Schema schema = new SchemaStore(config).create(schemaUri);
 
         assertThat(schema, is(notNullValue()));
         assertThat(schema.getId(), is(equalTo(schemaUri)));
@@ -50,7 +52,7 @@ public class SchemaStoreTest {
 
         URI addressSchemaUri = getClass().getResource("/schema/address.json").toURI();
 
-        SchemaStore schemaStore = new SchemaStore();
+        SchemaStore schemaStore = new SchemaStore(config);
         Schema addressSchema = schemaStore.create(addressSchemaUri);
         Schema enumSchema = schemaStore.create(addressSchema, "enum.json");
 
@@ -67,7 +69,7 @@ public class SchemaStoreTest {
 
         URI schemaUri = getClass().getResource("/schema/address.json").toURI();
 
-        SchemaStore schemaStore = new SchemaStore();
+        SchemaStore schemaStore = new SchemaStore(config);
         Schema addressSchema = schemaStore.create(schemaUri);
         Schema selfRefSchema = schemaStore.create(addressSchema, "#");
 
@@ -80,7 +82,7 @@ public class SchemaStoreTest {
 
         URI schemaUri = getClass().getResource("/schema/embeddedRef.json").toURI();
 
-        SchemaStore schemaStore = new SchemaStore();
+        SchemaStore schemaStore = new SchemaStore(config);
         Schema topSchema = schemaStore.create(schemaUri);
         Schema embeddedSchema = schemaStore.create(topSchema, "#/definitions/embedded");
         Schema selfRefSchema = schemaStore.create(embeddedSchema, "#");
@@ -94,7 +96,7 @@ public class SchemaStoreTest {
 
         URI addressSchemaUri = getClass().getResource("/schema/address.json").toURI();
 
-        SchemaStore schemaStore = new SchemaStore();
+        SchemaStore schemaStore = new SchemaStore(config);
         Schema addressSchema = schemaStore.create(addressSchemaUri);
         Schema innerSchema = schemaStore.create(addressSchema, "#/properties/post-office-box");
 
@@ -112,7 +114,7 @@ public class SchemaStoreTest {
 
         URI schemaUri = getClass().getResource("/schema/address.json").toURI();
 
-        SchemaStore schemaStore = new SchemaStore();
+        SchemaStore schemaStore = new SchemaStore(config);
 
         Schema schema1 = schemaStore.create(schemaUri);
 
@@ -130,7 +132,7 @@ public class SchemaStoreTest {
 
         URI schemaUri = getClass().getResource("/schema/address.json").toURI();
 
-        Schema schema = new SchemaStore().create(schemaUri);
+        Schema schema = new SchemaStore(config).create(schemaUri);
 
         schema.setJavaTypeIfEmpty(firstClass);
         assertThat(schema.getJavaType(), is(equalTo(firstClass)));

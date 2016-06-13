@@ -114,7 +114,7 @@ public class Jsonschema2Pojo {
     }
 
     private static String childQualifiedName(String parentQualifiedName, String childSimpleName) {
-        String safeChildName = childSimpleName.replaceAll(NameHelper.ILLEGAL_CHARACTER_REGEX, "_");
+        String safeChildName = NameHelper.replaceIllegalCharacters(childSimpleName);
         return isEmpty(parentQualifiedName) ? safeChildName : parentQualifiedName + "." + safeChildName;
     }
 

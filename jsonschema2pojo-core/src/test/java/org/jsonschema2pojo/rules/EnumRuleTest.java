@@ -59,7 +59,6 @@ public class EnumRuleTest {
 
         Answer<String> firstArgAnswer = new FirstArgAnswer<String>();
         when(nameHelper.getFieldName(anyString(), any(JsonNode.class))).thenAnswer(firstArgAnswer);
-        when(nameHelper.replaceIllegalCharacters(anyString())).thenAnswer(firstArgAnswer);
         when(nameHelper.normalizeName(anyString())).thenAnswer(firstArgAnswer);
 
         JPackage jpackage = new JCodeModel()._package(getClass().getPackage().getName());

@@ -49,6 +49,13 @@
 * P Wilder
 * Rakshith Rao (rakrao)
 * Lomig Megard
+* Rami Baksansky
 * Dimitrij Drus
 * Arno Puder
 * SpaceBison
+* Mike Woudenberg
+* Tobias Preuss
+* Max Myslyvtsev
+* Thach Hoang
+* Sam Duke
+* Alex Macrae

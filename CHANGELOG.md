@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.4.23
+* Force lower camel case fields when using JSON ([#563](https://github.com/joelittlejohn/jsonschema2pojo/issues/563))
+* Fix broken embedded refs ([#560](https://github.com/joelittlejohn/jsonschema2pojo/pull/560))
+* Added file extensions config parameter ([#548](https://github.com/joelittlejohn/jsonschema2pojo/pull/548))
+* Overridden builders are not added to empty child class ([#538](https://github.com/joelittlejohn/jsonschema2pojo/issues/538))
+* Wrong default value for BigDecimal ([#535](https://github.com/joelittlejohn/jsonschema2pojo/issues/535))
+* Add Moshi 1.x annotation style ([#529](https://github.com/joelittlejohn/jsonschema2pojo/pull/529))
+* Zip of binary distribution of CLI ([#500](https://github.com/joelittlejohn/jsonschema2pojo/issues/500))
+* Add serializable as an optional/configurable option ([#404](https://github.com/joelittlejohn/jsonschema2pojo/issues/404))
+
+## 0.4.22
+* Adding date-time types to Maven plugin mojo configuration ([#531](https://github.com/joelittlejohn/jsonschema2pojo/pull/531))
+* Fix javaName breaking required properties ([#528](https://github.com/joelittlejohn/jsonschema2pojo/pull/528))
+* Add support for using BigDecimal to represent numbers ([#517](https://github.com/joelittlejohn/jsonschema2pojo/pull/517))
+* Jsonschema2pojoRule report problems to STDERR ([#513](https://github.com/joelittlejohn/jsonschema2pojo/pull/513))
+
+## 0.4.21
+* Fix NullPointerException in Gradle plugin for Java (non-Android) projects ([#510](https://github.com/joelittlejohn/jsonschema2pojo/pull/510))
+
+## 0.4.20
+* Regression: when a extending a schema with a redefinition of the same field, with methods should be generated only once ([#507](https://github.com/joelittlejohn/jsonschema2pojo/issues/507))
+* Unnecessary @SuppressWarnings java warnings after upgrade ([#498](https://github.com/joelittlejohn/jsonschema2pojo/issues/498))
+* Improved Android support via Gradle plugin (NOTE: Changes behaviour regarding output directory) ([#495](https://github.com/joelittlejohn/jsonschema2pojo/pull/495))
+
 ## 0.4.19
 * Add javaName schema property ([#499](https://github.com/joelittlejohn/jsonschema2pojo/pull/499))
 * Declare an enum without that "static" ([#496](https://github.com/joelittlejohn/jsonschema2pojo/issues/496))

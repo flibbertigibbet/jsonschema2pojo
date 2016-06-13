@@ -71,6 +71,10 @@ jsonSchema2Pojo {
   // Whether to use the java type double (or Double) instead of float (or Float) when representing
   // the JSON Schema type 'number'.
   useDoubleNumbers = true
+  
+  // Whether to use the java type BigDecimal when representing the JSON Schema type 'number'. Note
+  // that this configuration overrides useDoubleNumbers
+  useBigDecimals = false
 
   // Whether to include hashCode and equals methods in generated Java types.
   includeHashcodeAndEquals = true
@@ -83,6 +87,7 @@ jsonSchema2Pojo {
   //  - jackson2 (apply annotations from the Jackson 2.x library)
   //  - jackson1 (apply annotations from the Jackson 1.x library)
   //  - gson (apply annotations from the Gson library)
+  //  - moshi1 (apply annotations from the Moshi 1.x library)
   //  - none (apply no annotations at all)
   annotationStyle = 'jackson'
 
@@ -129,8 +134,23 @@ jsonSchema2Pojo {
   // Whether to initialize Set and List fields as empty collections, or leave them as null.
   initializeCollections = true
   
+  // Whether to add a prefix to generated classes.
+  classNamePrefix = ""
+
+  // Whether to add a suffix to generated classes.
+  classNameSuffix = ""
+
+  // An array of strings that should be considered as file extensions and therefore not included in class names.
+  fileExtensions = [] as String[]
+
+  // Whether to generate constructors or not.
+  includeConstructors = false
+  
   // **EXPERIMENTAL** Whether to make the generated types Parcelable for Android
   parcelable = false
+
+  // Whether to make the generated types Serializable
+  serializable = false
 }
 ```
 
@@ -150,3 +170,29 @@ This task will automatically run in a project where the `jsonSchema2Pojo` config
 It will invoke the jsonschema2pojo generator, make the compileJava task dependent of itself and add
 the `targetDirectory` to the main/java source set so the java compiler will find and compile the newly
 generated source files.
+
+## Developers
+
+It can be useful to build this project and try out changes in your existing gradle project.
+
+1. From the root, run `mvn clean install`. This will install jsonschema2pojo in your local maven repository.
+2. Include the local repo in your gradle file, and change your dependency to use the development version, (typically ending with '-SNAPSHOT' - you can find this in `pom.xml`). e.g:
+
+```groovy
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+
+    dependencies {
+        // this plugin
+        classpath 'org.jsonschema2pojo:jsonschema2pojo-gradle-plugin:0.4.23-SNAPSHOT'
+        // add additional dependencies here if you wish to reference instead of generate them (see example directory)
+    }
+}
+
+repositories {
+    mavenLocal()
+}
+```
+

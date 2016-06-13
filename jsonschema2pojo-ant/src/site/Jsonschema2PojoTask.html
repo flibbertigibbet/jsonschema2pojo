@@ -38,6 +38,7 @@
             <li><code>JACKSON2</code> (apply annotations from the <a href="https://github.com/FasterXML/jackson-annotations">Jackson 2.x</a> library)</li>
             <li><code>JACKSON1</code> (apply annotations from the <a href="http://jackson.codehaus.org/">Jackson 1.x</a> library)</li>
             <li><code>GSON</code> (apply annotations from the <a href="https://code.google.com/p/google-gson//">Gson</a> library)</li>
+            <li><code>MOSHI1</code> (apply annotations from the <a href="https://github.com/square/moshi//">Moshi 1.x</a> library)</li>
             <li><code>NONE</code> (apply no annotations at all)</li>
           </ul>
         </td>
@@ -50,8 +51,13 @@
       </tr>
       <tr>
         <td valign="top">classNameSuffix</td>
-        <td valign="top">Whether to add a Suffix to generated classes</td>
+        <td valign="top">Whether to add a suffix to generated classes</td>
         <td align="center" valign="top">No (default <code>""</code>)</td>
+      </tr>
+      <tr>
+        <td valign="top">fileExtensions</td>
+        <td valign="top">A string containing file extensions that should be considered full extensions and therefore ignored when generating classnames.</td>
+        <td align="center" valign="top">No (default <code>""</code> (none))</td>
       </tr>
       <tr>
         <td valign="top">classpath</td>
@@ -164,6 +170,11 @@
         <td align="center" valign="top">No (default <code>false</code>)</td>
       </tr>
       <tr>
+        <td valign="top">serializable</td>
+        <td valign="top">Whether to make the generated types 'serializable'.</td>
+        <td align="center" valign="top">No (default <code>false</code>)</td>
+      </tr>
+      <tr>
         <td valign="top">propertyWordDelimiters</td>
         <td valign="top">A string containing any characters that should act as word delimiters when choosing Java bean property names.</td>
         <td align="center" valign="top">No (default "- _" (hyphen, space, underscore))</td>
@@ -207,6 +218,11 @@
         <td valign="top">useDoubleNumbers</td>
         <td valign="top">Whether to use the java type <code>double</code> (or <code>Double</code>) instead of <code>float</code> (or <code>Float</code>) when representing the JSON Schema type 'number'.</td>
         <td align="center" valign="top">No (default <code>true</code>)</td>
+      </tr>
+      <tr>
+        <td valign="top">useBigDecimals</td>
+        <td valign="top">Whether to use the java type <code>BigDecimal</code> instead of <code>float</code> (or <code>java.lang.Float</code>) when representing the JSON Schema type 'number'. Note that this overrides <code>useDoubleNumbers</code>.</td>
+        <td align="center" valign="top">No (default <code>false</code>)</td>
       </tr>
       <tr>
         <td valign="top">useJodaDates</td>

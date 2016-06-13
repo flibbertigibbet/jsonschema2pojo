@@ -201,6 +201,14 @@ public class DefaultGenerationConfig implements GenerationConfig {
         return false;
     }
 
+    /**
+     * @return <code>false</code>
+     */
+    @Override
+    public boolean isSerializable() {
+        return false;
+    }
+
     @Override
     public FileFilter getFileFilter() {
         return new AllFileFilter();
@@ -222,6 +230,16 @@ public class DefaultGenerationConfig implements GenerationConfig {
     @Override
     public String getClassNameSuffix() {
         return "";
+    }
+
+    @Override
+    public String[] getFileExtensions() {
+        return new String[] {};
+    }
+
+    @Override
+    public boolean isUseBigDecimals() {
+        return false;
     }
 
     /**
@@ -265,11 +283,11 @@ public class DefaultGenerationConfig implements GenerationConfig {
     }
 
     /**
-     * @return <code>true</code>
+     * @return <code>false</code>
      */
     @Override
     public boolean isIncludeDynamicAccessors() {
-        return true;
+        return false;
     }
 
     @Override

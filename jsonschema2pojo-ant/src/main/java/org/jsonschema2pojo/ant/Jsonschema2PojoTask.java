@@ -79,6 +79,8 @@ public class Jsonschema2PojoTask extends Task implements GenerationConfig {
 
     private boolean useDoubleNumbers = true;
 
+    private boolean useBigDecimals = false;
+
     private boolean includeHashcodeAndEquals = true;
 
     private boolean includeToString = true;
@@ -109,18 +111,22 @@ public class Jsonschema2PojoTask extends Task implements GenerationConfig {
 
     private boolean parcelable = false;
 
+    private boolean serializable = false;
+
     private boolean initializeCollections = true;
 
     private String classNamePrefix = "";
 
     private String classNameSuffix = "";
 
+    private String[] fileExtensions = new String[] {};
+
     private boolean constructorsRequiredPropertiesOnly = false;
 
     private boolean includeAdditionalProperties = true;
 
     private boolean includeAccessors = true;
-    
+
     private String targetVersion = "1.6";
 
     private boolean includeDynamicAccessors = false;
@@ -288,6 +294,19 @@ public class Jsonschema2PojoTask extends Task implements GenerationConfig {
      */
     public void setUseDoubleNumbers(boolean useDoubleNumbers) {
         this.useDoubleNumbers = useDoubleNumbers;
+    }
+
+    /**
+     * Sets the 'useBigDecimals' property of this class
+     *
+     * @param useBigDecimals
+     *            Whether to use the java type <code>BigDecimal</code>
+     *            instead of <code>float</code> (or {@link java.lang.Float})
+     *            when representing the JSON Schema type 'number'. Note that
+     *            this overrides <code>useDoubleNumbers</code>.
+     */
+    public void setUseBigDecimals(boolean useBigDecimals) {
+        this.useBigDecimals = useBigDecimals;
     }
 
     /**
@@ -525,6 +544,16 @@ public class Jsonschema2PojoTask extends Task implements GenerationConfig {
     }
 
     /**
+     * Sets the 'serializable' property of this class
+     *
+     * @param serializable
+     *            Whether to make the generated types 'serializable'.
+     */
+    public void setSerializable(boolean serializable) {
+        this.serializable = serializable;
+    }
+
+    /**
      * Sets the 'initializeCollections' property of this class
      *
      * @param initializeCollections
@@ -532,6 +561,37 @@ public class Jsonschema2PojoTask extends Task implements GenerationConfig {
      */
     public void setInitializeCollections(boolean initializeCollections) {
         this.initializeCollections = initializeCollections;
+    }
+
+    /**
+     * Sets the 'classNamePrefix' property of this class
+     *
+     * @param classNamePrefix
+     *            Whether to add a prefix to generated classes.
+     */
+    public void setClassNamePrefix(String classNamePrefix) {
+        this.classNamePrefix = classNamePrefix;
+    }
+
+    /**
+     * Sets the 'classNameSuffix' property of this class
+     *
+     * @param classNameSuffix
+     *            Whether to add a suffix to generated classes.
+     */
+    public void setClassNameSuffix(String classNameSuffix) {
+        this.classNameSuffix = classNameSuffix;
+    }
+
+    /**
+     * Sets the 'fileExtensions' property of this class
+     *
+     * @param classNameSuffix
+     *            The array of strings that should be considered as file
+     *            extensions and therefore not included in class names.
+     */
+    public void setFileExtensions(String[] fileExtensions) {
+        this.fileExtensions = fileExtensions;
     }
 
     /**
@@ -722,6 +782,11 @@ public class Jsonschema2PojoTask extends Task implements GenerationConfig {
     }
 
     @Override
+    public boolean isSerializable() {
+        return serializable;
+    }
+
+    @Override
     public FileFilter getFileFilter() {
         return new AllFileFilter();
     }
@@ -739,6 +804,11 @@ public class Jsonschema2PojoTask extends Task implements GenerationConfig {
     @Override
     public String getClassNameSuffix() {
         return classNameSuffix;
+    }
+
+    @Override
+    public String[] getFileExtensions() {
+        return fileExtensions;
     }
 
     @Override
@@ -784,5 +854,10 @@ public class Jsonschema2PojoTask extends Task implements GenerationConfig {
     @Override
     public String getTimeType() {
         return timeType;
+    }
+
+    @Override
+    public boolean isUseBigDecimals() {
+        return useBigDecimals;
     }
 }

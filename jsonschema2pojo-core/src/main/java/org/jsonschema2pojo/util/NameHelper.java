@@ -22,8 +22,6 @@ import com.sun.codemodel.JType;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jsonschema2pojo.GenerationConfig;
 
-import static java.lang.Character.isJavaIdentifierPart;
-import static java.lang.Character.isJavaIdentifierStart;
 import static javax.lang.model.SourceVersion.isKeyword;
 import static org.apache.commons.lang3.StringUtils.capitalize;
 import static org.apache.commons.lang3.StringUtils.containsAny;

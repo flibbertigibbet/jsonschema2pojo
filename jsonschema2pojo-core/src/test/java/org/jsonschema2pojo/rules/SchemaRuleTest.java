@@ -24,6 +24,8 @@ import static org.mockito.Mockito.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.jsonschema2pojo.DefaultGenerationConfig;
+import org.jsonschema2pojo.GenerationConfig;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -44,6 +46,8 @@ public class SchemaRuleTest {
 
     private RuleFactory mockRuleFactory = mock(RuleFactory.class);
     private SchemaRule rule = new SchemaRule(mockRuleFactory);
+    private GenerationConfig config = new DefaultGenerationConfig();
+    private SchemaStore store = new SchemaStore(config);
 
     @Test
     public void refsToOtherSchemasAreLoaded() throws URISyntaxException, JClassAlreadyExistsException {
@@ -57,7 +61,7 @@ public class SchemaRuleTest {
 
         TypeRule mockTypeRule = mock(TypeRule.class);
         when(mockRuleFactory.getTypeRule()).thenReturn(mockTypeRule);
-        when(mockRuleFactory.getSchemaStore()).thenReturn(new SchemaStore());
+        when(mockRuleFactory.getSchemaStore()).thenReturn(store);
 
         ArgumentCaptor<JsonNode> captureJsonNode = ArgumentCaptor.forClass(JsonNode.class);
         ArgumentCaptor<Schema> captureSchema = ArgumentCaptor.forClass(Schema.class);
@@ -105,7 +109,7 @@ public class SchemaRuleTest {
 
         URI schemaUri = getClass().getResource("/schema/address.json").toURI();
 
-        SchemaStore schemaStore = new SchemaStore();
+        SchemaStore schemaStore = new SchemaStore(config);
         Schema schema = schemaStore.create(schemaUri);
         schema.setJavaType(previouslyGeneratedType);
 

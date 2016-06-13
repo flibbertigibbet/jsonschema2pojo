@@ -39,7 +39,7 @@ import com.sun.codemodel.JPackage;
 public class ArrayRuleTest {
 
     private final GenerationConfig config = mock(GenerationConfig.class);
-    private final ArrayRule rule = new ArrayRule(new RuleFactory(config, new NoopAnnotator(), new SchemaStore()));
+    private final ArrayRule rule = new ArrayRule(new RuleFactory(config, new NoopAnnotator()));
 
     @Test
     public void arrayWithUniqueItemsProducesSet() {

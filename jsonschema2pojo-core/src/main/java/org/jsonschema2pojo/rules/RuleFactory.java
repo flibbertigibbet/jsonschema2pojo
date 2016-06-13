@@ -53,13 +53,11 @@ public class RuleFactory {
      * @param annotator
      *            the annotator used to mark up Java types with any annotations
      *            that are required to build JSON compatible types
-     * @param schemaStore
-     *            the object used by this factory to get and store schemas
      */
-    public RuleFactory(GenerationConfig generationConfig, Annotator annotator, SchemaStore schemaStore) {
+    public RuleFactory(GenerationConfig generationConfig, Annotator annotator) {
         this.generationConfig = generationConfig;
         this.annotator = annotator;
-        this.schemaStore = schemaStore;
+        this.schemaStore = new SchemaStore(generationConfig);
         this.nameHelper = new NameHelper(generationConfig);
     }
 
@@ -69,7 +67,7 @@ public class RuleFactory {
      * @see DefaultGenerationConfig
      */
     public RuleFactory() {
-        this(new DefaultGenerationConfig(), new Jackson2Annotator(), new SchemaStore());
+        this(new DefaultGenerationConfig(), new Jackson2Annotator());
     }
 
     /**

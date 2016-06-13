@@ -29,8 +29,13 @@ public class SchemaStore {
 
     protected Map<URI, Schema> schemas = new HashMap<URI, Schema>();
 
-    protected FragmentResolver fragmentResolver = new FragmentResolver();
-    protected ContentResolver contentResolver = new ContentResolver();
+    protected FragmentResolver fragmentResolver;
+    protected ContentResolver contentResolver;
+
+    public SchemaStore(GenerationConfig config) {
+        this.fragmentResolver = new FragmentResolver(config.getOutputEncoding());
+        this.contentResolver = new ContentResolver();
+    }
 
     /**
      * Create or look up a new schema which has the given ID and read the

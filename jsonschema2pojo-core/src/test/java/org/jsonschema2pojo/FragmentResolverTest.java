@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class FragmentResolverTest {
 
-    private FragmentResolver resolver = new FragmentResolver();
+    private FragmentResolver resolver = new FragmentResolver("UTF-8");
 
     @Test
     public void hashResolvesToRoot() {

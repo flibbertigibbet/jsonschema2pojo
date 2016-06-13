@@ -75,20 +75,9 @@ public class RuleFactoryImplTest {
 
         GenerationConfig mockGenerationConfig = mock(GenerationConfig.class);
 
-        RuleFactory ruleFactory = new RuleFactory(mockGenerationConfig, new NoopAnnotator(), new SchemaStore());
+        RuleFactory ruleFactory = new RuleFactory(mockGenerationConfig, new NoopAnnotator());
 
         assertThat(ruleFactory.getGenerationConfig(), is(sameInstance(mockGenerationConfig)));
-
-    }
-
-    @Test
-    public void schemaStoreIsReturned() {
-
-        SchemaStore mockSchemaStore = mock(SchemaStore.class);
-
-        RuleFactory ruleFactory = new RuleFactory(new DefaultGenerationConfig(), new NoopAnnotator(), mockSchemaStore);
-
-        assertThat(ruleFactory.getSchemaStore(), is(sameInstance(mockSchemaStore)));
 
     }
 

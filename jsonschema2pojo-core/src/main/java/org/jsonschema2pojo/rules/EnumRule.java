@@ -39,6 +39,7 @@ import org.jsonschema2pojo.Schema;
 import org.jsonschema2pojo.SchemaMapper;
 import org.jsonschema2pojo.exception.ClassAlreadyExistsException;
 import org.jsonschema2pojo.exception.GenerationException;
+import org.jsonschema2pojo.util.NameHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -232,7 +233,7 @@ public class EnumRule implements Rule<JClassContainer, JType> {
 
     private String getEnumName(String nodeName, JsonNode node, JClassContainer container) {
         String fieldName = ruleFactory.getNameHelper().getFieldName(nodeName, node);
-        String className = ruleFactory.getNameHelper().replaceIllegalCharacters(capitalize(fieldName));
+        String className = NameHelper.replaceIllegalCharacters(capitalize(fieldName));
         String normalizedName = ruleFactory.getNameHelper().normalizeName(className);
         // suffix enum names with "Enum" to avoid name clash with capitalized field names
         return makeUnique(normalizedName + "Enum", container);
@@ -262,9 +263,9 @@ public class EnumRule implements Rule<JClassContainer, JType> {
 
         List<String> enumNameGroups = new ArrayList<String>(asList(splitByCharacterTypeCamelCase(nodeName)));
 
-        String enumName = "";
+        String enumName;
         for (Iterator<String> iter = enumNameGroups.iterator(); iter.hasNext();) {
-            if (containsOnly(ruleFactory.getNameHelper().replaceIllegalCharacters(iter.next()), "_")) {
+            if (containsOnly(NameHelper.replaceIllegalCharacters(iter.next()), "_")) {
                 iter.remove();
             }
         }

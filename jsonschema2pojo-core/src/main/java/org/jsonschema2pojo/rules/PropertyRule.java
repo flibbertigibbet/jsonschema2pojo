@@ -29,6 +29,7 @@ import com.sun.codemodel.JVar;
 
 import org.jsonschema2pojo.GenerationConfig;
 import org.jsonschema2pojo.Schema;
+import org.jsonschema2pojo.util.NameHelper;
 
 import static org.apache.commons.lang3.StringUtils.capitalize;
 
@@ -203,7 +204,7 @@ public class PropertyRule implements Rule<JDefinedClass, JDefinedClass> {
     }
 
     private String getBuilderName(String propertyName) {
-        propertyName = ruleFactory.getNameHelper().replaceIllegalCharacters(propertyName);
+        propertyName = NameHelper.replaceIllegalCharacters(propertyName);
         return "with" + capitalize(ruleFactory.getNameHelper().capitalizeTrailingWords(propertyName));
     }
 

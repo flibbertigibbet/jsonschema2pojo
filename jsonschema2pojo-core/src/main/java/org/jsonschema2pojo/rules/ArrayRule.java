@@ -78,7 +78,7 @@ public class ArrayRule implements Rule<JPackage, JClass> {
 
         JType itemType;
         if (node.has("items")) {
-            itemType = ruleFactory.getSchemaRule().apply(makeSingular(nodeName), node.get("items"), jpackage, schema);
+            itemType = ruleFactory.getSchemaRule().apply(nodeName, node.get("items"), jpackage, schema);
         } else {
             itemType = jpackage.owner().ref(Object.class);
         }

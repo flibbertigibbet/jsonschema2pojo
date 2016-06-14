@@ -542,7 +542,7 @@ public class ObjectRule implements Rule<JPackage, JType> {
         String capitalizedFieldName = capitalize(fieldName);
         String fullFieldName = createFullFieldName(capitalizedFieldName, prefix, suffix);
 
-        String className = ruleFactory.getNameHelper().replaceIllegalCharacters(fullFieldName);
+        String className = NameHelper.replaceIllegalCharacters(fullFieldName);
         String normalizedName = ruleFactory.getNameHelper().normalizeName(className);
         return makeUnique(normalizedName, _package);
     }

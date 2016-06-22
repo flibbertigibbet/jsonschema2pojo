@@ -142,6 +142,16 @@ public class JsonEditorAnnotator extends AbstractAnnotator {
             }
         }
 
+        if (propertyNode.has("format")) {
+            String format = propertyNode.get("format").asText();
+            FieldFormats foundFormat = FieldFormats.valueOf(format);
+
+            JAnnotationUse fieldFormatAnnotation = field.annotate(FieldFormat.class);
+            if (!format.isEmpty()) {
+                fieldFormatAnnotation.param("value", foundFormat);
+            }
+        }
+
         if (propertyNode.has("options")) {
             JsonNode options = propertyNode.get("options");
             if (options.has("hidden")) {

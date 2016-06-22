@@ -22,5 +22,5 @@ package org.jsonschema2pojo.annotations;
  * Created by kat on 11/22/15.
  */
 public enum FieldTypes {
-    text, image, selectlist, reference
+    text, image, selectlist, reference, integer, string, object, booleantype, arraytype
 }

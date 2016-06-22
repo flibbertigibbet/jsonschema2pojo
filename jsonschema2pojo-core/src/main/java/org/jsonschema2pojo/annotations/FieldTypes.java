@@ -17,6 +17,8 @@
 package org.jsonschema2pojo.annotations;
 
 /**
+ * For annotating with JSON schema field types.
+ *
  * Created by kat on 11/22/15.
  */
 public enum FieldTypes {

@@ -16,11 +16,13 @@
 
 package org.jsonschema2pojo.annotations;
 
-/**
- * For annotating with JSON schema field types.
- *
- * Created by kat on 11/22/15.
- */
-public enum FieldTypes {
-    text, image, selectlist, reference, integer, string, object, booleantype, arraytype
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface FieldFormat {
+    FieldFormats value();
 }

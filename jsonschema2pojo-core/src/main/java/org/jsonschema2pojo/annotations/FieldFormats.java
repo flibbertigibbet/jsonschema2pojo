@@ -17,10 +17,13 @@
 package org.jsonschema2pojo.annotations;
 
 /**
- * For annotating with JSON schema field types.
+ * For annotating with JSON schema field formats, as used by json-editor.
  *
- * Created by kat on 11/22/15.
+ * Created by kat on 6/22/16.
  */
-public enum FieldTypes {
-    text, image, selectlist, reference, integer, string, object, booleantype, arraytype
+public enum FieldFormats {
+    // text type formats
+    color, date, datetime, datetimelocal, email, html, month, integer, number, range, tel, text, textarea, time, url, week,
+    // other type formats
+    checkbox, table, select, grid, location
 }

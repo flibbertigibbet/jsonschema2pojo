@@ -16,11 +16,13 @@
 
 package org.jsonschema2pojo.rules;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Date;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import com.sun.codemodel.JCodeModel;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
@@ -81,51 +83,79 @@ public class FormatRule implements Rule<JType, JType> {
      */
     @Override
     public JType apply(String nodeName, JsonNode node, JType baseType, Schema schema) {
+        
+        String nodeText = node.asText();
 
-        if (node.asText().equals("date-time")) {
+        if (nodeText.equals("date-time")) {
             return baseType.owner().ref(getDateTimeType());
 
-        } else if (node.asText().equals("date")) {
+        } else if (nodeText.equals("date")) {
             return baseType.owner().ref(getDateOnlyType());
 
-        } else if (node.asText().equals("time")) {
+        } else if (nodeText.equals("time")) {
             return baseType.owner().ref(getTimeOnlyType());
 
-        } else if (node.asText().equals("utc-millisec")) {
+        } else if (nodeText.equals("utc-millisec")) {
             return unboxIfNecessary(baseType.owner().ref(Long.class), ruleFactory.getGenerationConfig());
 
-        } else if (node.asText().equals("regex")) {
+        } else if (nodeText.equals("regex")) {
             return baseType.owner().ref(Pattern.class);
 
-        } else if (node.asText().equals("color")) {
+        } else if (nodeText.equals("color")) {
             return baseType.owner().ref(String.class);
 
-        } else if (node.asText().equals("style")) {
+        } else if (nodeText.equals("style")) {
             return baseType.owner().ref(String.class);
 
-        } else if (node.asText().equals("phone")) {
+        } else if (nodeText.equals("phone")) {
             return baseType.owner().ref(String.class);
 
-        } else if (node.asText().equals("uri")) {
+        } else if (nodeText.equals("uri")) {
             return baseType.owner().ref(URI.class);
 
-        } else if (node.asText().equals("email")) {
+        } else if (nodeText.equals("email")) {
             return baseType.owner().ref(String.class);
 
-        } else if (node.asText().equals("ip-address")) {
+        } else if (nodeText.equals("ip-address")) {
             return baseType.owner().ref(String.class);
 
-        } else if (node.asText().equals("ipv6")) {
+        } else if (nodeText.equals("ipv6")) {
             return baseType.owner().ref(String.class);
 
-        } else if (node.asText().equals("host-name")) {
+        } else if (nodeText.equals("host-name")) {
             return baseType.owner().ref(String.class);
-        }
-          else if (node.asText().equals("uuid")) {
-                return baseType.owner().ref(UUID.class);
+        } else if (nodeText.equals("uuid")) {
+            return baseType.owner().ref(UUID.class);
+        } else if (nodeText.equals("number")) {
+            return getNumberType(baseType.owner());
+        } else if (nodeText.equals("integer")) {
+            return getIntegerType(baseType.owner(), node);
         }
          else {
             return baseType;
+        }
+
+    }
+
+    private JType getNumberType(JCodeModel owner) {
+        GenerationConfig config = ruleFactory.getGenerationConfig();
+        if (config.isUseBigDecimals()) {
+            return unboxIfNecessary(owner.ref(BigDecimal.class), config);
+        } else if (config.isUseDoubleNumbers()) {
+            return unboxIfNecessary(owner.ref(Double.class), config);
+        } else {
+            return unboxIfNecessary(owner.ref(Float.class), config);
+        }
+    }
+
+    private JType getIntegerType(JCodeModel owner, JsonNode node) {
+        GenerationConfig config = ruleFactory.getGenerationConfig();
+        if (config.isUseLongIntegers() ||
+                (node.has("minimum") && node.get("minimum").isLong()) ||
+                (node.has("maximum") && node.get("maximum").isLong())) {
+            return unboxIfNecessary(owner.ref(Long.class), config);
+        } else {
+            return unboxIfNecessary(owner.ref(Integer.class), config);
         }
 
     }

@@ -22,6 +22,7 @@ import com.sun.codemodel.JType;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jsonschema2pojo.GenerationConfig;
 
+import static javax.lang.model.SourceVersion.isIdentifier;
 import static javax.lang.model.SourceVersion.isKeyword;
 import static org.apache.commons.lang3.StringUtils.capitalize;
 import static org.apache.commons.lang3.StringUtils.containsAny;
@@ -36,6 +37,10 @@ public class NameHelper {
     }
 
     public static String replaceIllegalCharacters(String name) {
+        if (isIdentifier(name)) {
+            return name;
+        }
+
         for (char character: name.toCharArray()) {
             if (!Character.isJavaIdentifierPart(character)) {
                 name = name.replace(String.valueOf(character), "_");

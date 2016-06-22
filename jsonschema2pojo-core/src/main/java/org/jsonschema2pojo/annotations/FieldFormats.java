@@ -7,7 +7,7 @@ package org.jsonschema2pojo.annotations;
  */
 public enum FieldFormats {
     // text type formats
-    color, date, datetime, datetimelocal, email, html, month, number, range, tel, text, textarea, time, url, week,
+    color, date, datetime, datetimelocal, email, html, month, integer, number, range, tel, text, textarea, time, url, week,
     // other type formats
     checkbox, table, select, grid, location
 }

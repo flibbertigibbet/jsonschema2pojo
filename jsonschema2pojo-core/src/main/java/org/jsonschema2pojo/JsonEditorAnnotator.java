@@ -94,10 +94,24 @@ public class JsonEditorAnnotator extends AbstractAnnotator {
 
         if (propertyNode.has("fieldType")) {
             String fieldType = propertyNode.get("fieldType").asText();
-            FieldTypes foundFieldType = FieldTypes.valueOf(fieldType);
-            
-            JAnnotationUse fieldTypeAnnotation = field.annotate(FieldType.class);
-            fieldTypeAnnotation.param("value", foundFieldType);
+
+            // find annotation enum names that differ from scheam to avoid clashing with reserved words
+            if (fieldType.equals("array") || fieldType.equals("boolean") || fieldType.equals("null")) {
+                fieldType += "type";
+            }
+
+            FieldTypes foundFieldType = null;
+            try {
+                foundFieldType = FieldTypes.valueOf(fieldType);
+                JAnnotationUse fieldTypeAnnotation = field.annotate(FieldType.class);
+                fieldTypeAnnotation.param("value", foundFieldType);
+            } catch (NullPointerException ex) {
+                // fieldType is missing
+                Log.warning("no type defined in fieldType property for field " + propertyName);
+            } catch (IllegalArgumentException ex) {
+                // enum of fieldType not found
+                Log.warning("field type " + fieldType + " on field " + propertyName + " not recognized in FieldTypes enum");
+            }
 
             /* Additional annotations for reference types. To see how they're built in DRIVER:
              * https://github.com/WorldBank-Transport/DRIVER/blob/develop/schema_editor/app/scripts/schemas/schemas-service.js
@@ -105,7 +119,6 @@ public class JsonEditorAnnotator extends AbstractAnnotator {
              * enumSource value is always _localId, and id is always the default 'item'.
              */
             if (foundFieldType == FieldTypes.reference) {
-
                 // annotate with watch target (referenced field)
                 JsonNode watch = propertyNode.get("watch");
                 if (watch != null && watch.has("target")) {
